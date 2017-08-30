@@ -1,0 +1,101 @@
+define motor right_drive      { port 3 };
+define motor front_left_drive { port 10, reversed true };
+define motor back_left_drive  { port 1 };
+
+define motor right_arm_one { port 5 };
+define motor right_arm_two { port 4 };
+define motor left_arm_one  { port 7, reversed true };
+define motor left_arm_two  { port 6, reversed true };
+
+define motor claw_left  { port 9, reversed true };
+define motor claw_right { port 8 };
+
+define input claw_close { type 'digital', port 5D };
+define input claw_open  { type 'digital', port 5U };
+
+define input arm_up    { type 'digital', port 6U };
+define input arm_hover { type 'digital', port 6D };
+
+define input arm_down      { type 'digital', port 8R };
+define input arm_backhover { type 'digital', port 8D };
+
+define input left_input  { type 'analog', port 3 };
+define input right_input { type 'analog', port 2 };
+
+define constant arm_speed   { value 120 };
+define constant hover_speed { value 10  };
+define constant claw_speed  { value 50  };
+
+
+trigger always left_input {
+	set front_left_drive $value,
+	set back_left_drive  $value
+};
+
+trigger always right_input {
+	set right_drive $value
+};
+
+
+trigger held claw_close {
+	set claw_left  $claw_speed,
+	set claw_right $claw_speed
+};
+
+trigger held claw_open {
+	set claw_left  -$claw_speed,
+	set claw_right -$claw_speed
+};
+
+trigger up claw_close {
+	set claw_left  0,
+	set claw_right 0
+};
+
+trigger up claw_open {
+	set claw_left  0,
+	set claw_right 0
+};
+
+
+trigger held arm_up {
+	set right_arm_one $arm_speed,
+	set right_arm_two $arm_speed,
+	set left_arm_one  $arm_speed,
+	set left_arm_two  $arm_speed
+};
+
+trigger held arm_down {
+	set right_arm_one -$arm_speed,
+	set right_arm_two -$arm_speed,
+	set left_arm_one  -$arm_speed,
+	set left_arm_two  -$arm_speed
+};
+
+trigger held arm_hover {
+	set right_arm_one $hover_speed,
+	set right_arm_two $hover_speed,
+	set left_arm_one  $hover_speed,
+	set left_arm_two  $hover_speed
+};
+
+trigger up arm_up {
+	set right_arm_one 0,
+	set right_arm_two 0,
+	set left_arm_one  0,
+	set left_arm_two  0
+};
+
+trigger up arm_down {
+	set right_arm_one 0,
+	set right_arm_two 0,
+	set left_arm_one  0,
+	set left_arm_two  0
+};
+
+trigger up arm_hover {
+	set right_arm_one 0,
+	set right_arm_two 0,
+	set left_arm_one  0,
+	set left_arm_two  0
+};
